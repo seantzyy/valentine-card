@@ -1,0 +1,34 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle click event for the 14th
+    var clickable14 = document.getElementById('14');
+    clickable14.addEventListener('click', function() {
+        var selectedDateInput = document.getElementById('selectedDate');
+        selectedDateInput.value = '2025-02-13'; // Set the value to February 14th
+        clickable14.classList.add('selected');
+        alert('DI KANA VACANT SA FEB 13! mine kana po :)');
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    var date14 = document.getElementById('14');
+    date14.addEventListener('click', function() {
+        window.location.href = 'combined.html';
+    });
+});
+
+// Make the "No" button fly across the screen when the cursor is placed on it
+var noButton = document.getElementById('noButton');
+    
+noButton.addEventListener('mouseover', function() {
+    // Make the "No" button move to a random position
+    var randomX = Math.floor(Math.random() * window.innerWidth - noButton.offsetWidth);
+    var randomY = Math.floor(Math.random() * window.innerHeight - noButton.offsetHeight);
+    
+    noButton.style.position = 'absolute';
+    noButton.style.left = randomX + 'px';
+    noButton.style.top = randomY + 'px';
+});
+
+// Make the "No" button unclickable
+noButton.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default action of the button
+});
