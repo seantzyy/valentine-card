@@ -1,106 +1,101 @@
-"use strict";
+let currentPage = 1;
 
-const titleElement = document.querySelector(".title");
-const buttonsContainer = document.querySelector(".buttons-container");
-const yesButton = document.querySelector(".btn--yes");
-const noButton = document.querySelector(".btn--no");
-const catImg = document.querySelector(".cat-img");
-
-const MAX_IMAGES = 20;
-
-let play = true;
-let noCount = 0;
-
-yesButton.addEventListener("click", handleYesClick);
-
-noButton.addEventListener("click", function () {
-  if (play) {
-    noCount++;
-    const imageIndex = Math.min(noCount, MAX_IMAGES);
-    changeImage(imageIndex);
-    resizeYesButton();
-    updateNoButtonText();
-    adjustNoButtonPosition();
-    if (noCount === MAX_IMAGES) {
-      play = false;
+function nextPage() {
+    if (currentPage < 4) {
+        document.getElementById(`page${currentPage}`).classList.remove('active');
+        currentPage++;
+        document.getElementById(`page${currentPage}`).classList.add('active');
     }
-  }
-});
-
-function handleYesClick() {
-  window.location.href = "Confirmation.html"; 
 }
 
-function resizeYesButton() {
-  const computedStyle = window.getComputedStyle(yesButton);
-  const fontSize = parseFloat(computedStyle.getPropertyValue("font-size"));
-  const newFontSize = fontSize * 1.2;
+function confirmDate() {
+    // Create celebration effect
+    const button = event.target;
+    button.innerHTML = 'Planning Complete! 🥰';
+    button.style.background = 'linear-gradient(135deg, #32cd32, #90ee90)';
 
-  yesButton.style.fontSize = `${newFontSize}px`;
-}
+    // Add celebration hearts
+    for (let i = 0; i < 20; i++) {
+        createCelebrationHeart();
+    }
 
-function generateMessage(noCount) {
-  const messages = [
-    "No",
-    "Are you sure?",
-    "Are you really sure??",
-    "Are you really really sure???",
-    "How about a fifth chance?",
-    "NO PADIN",
-    "DALI NA :(",
-    "AY AYAW MO TALAGA AH",
-    "Ok now you're hurting my feelings!",
-    "You're being mean!",
-    "Why are u doing this to me? :(",
-    "Give me a chance! Say YES",
-    "Stop pushing this button!",
-    "Come on, don't break my heart!",
-    "HAHA ayaw mo talaga mag yes noh?",
-    "Kala mo titigil ako? MAG YES KA NA",
-    "Favorite mo talaga yung 'No' noh??",
-    "I promise saying yes will make u smile :)",
-    "Let's turn those no's into maybe's and then yes's! o diba cheesy",
-    "Say yes and I'll bring snacks :*"
-  ];
-
-  if (noCount >= messages.length) {
-    return null; // Indicates that messages are exhausted
-  }
-
-  return messages[noCount];
-}
-
-function changeImage(image) {
-  catImg.src = `img/cat-0.gif`;
-}
-
-function updateNoButtonText() {
-  const message = generateMessage(noCount);
-  if (message === null) {
+    // Show final message
     setTimeout(() => {
-      alert("YAN!, wala ka ng 'no' na choice YOU CAN ONLY SAY YES :P");
-      noButton.style.display = "none"; 
-    }, 200);
-  } else {
-    noButton.innerHTML = message;
-  }
+        const message = document.createElement('div');
+        message.innerHTML = `
+            <div style="font-size: 24px; margin-bottom: 15px;">🎉 Our Date is Set! 🎉</div>
+            <div>JUST BRING YOURSELF BABY!</div>
+            <div style="margin-top: 15px; font-size: 18px;">💕 Can't wait to see you! 💕</div>
+        `;
+        message.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #d4af8c, #c9a876);
+            color: white;
+            padding: 30px 40px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 15px 40px rgba(212, 175, 140, 0.6);
+            z-index: 1000;
+            animation: slideIn 0.5s ease-out;
+            text-align: center;
+            max-width: 400px;
+        `;
+
+        document.body.appendChild(message);
+
+        setTimeout(() => {
+            message.remove();
+        }, 4000);
+    }, 800);
 }
 
-function adjustNoButtonPosition() {
-  // Move the "No" button down as the "Yes" button grows
-  const yesButtonHeight = yesButton.offsetHeight;
-  noButton.style.marginTop = `${yesButtonHeight / 2}px`;
+function createCelebrationHeart() {
+    const heart = document.createElement('div');
+    heart.innerHTML = ['💖', '💕', '💗', '💝', '👑', '✨'][Math.floor(Math.random() * 6)];
+    heart.style.cssText = `
+        position: fixed;
+        font-size: ${20 + Math.random() * 20}px;
+        pointer-events: none;
+        z-index: 1000;
+        left: ${Math.random() * 100}vw;
+        top: 100vh;
+        animation: celebrationFloat ${3 + Math.random() * 2}s ease-out forwards;
+    `;
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 5000);
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const okButton = document.getElementById("okButton");
+// Add celebration animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+    }
 
-  if (okButton) {
-      okButton.addEventListener("click", function () {
-          window.location.href = "Gift.html"; // Redirect to the gift page
-      });
-  }
-});
-
-
-
+    @keyframes celebrationFloat {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-120vh) rotate(${Math.random() * 720}deg);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
